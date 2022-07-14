@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body style="background-color:gray">
+    <div class="container my-5">
+        <form class="needs-validation" novalidate action="https://sheetdb.io/api/v1/qjgysnpnfnmnp" method="post"
+            id="sheetdb-form">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="data[name]" placeholder="Imad Khan" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="data[email]" placeholder="name@example.com"
+                    required>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="data[phone]"
+                    placeholder="+91987654321" required>
+            </div>
+            <div class="mb-3">
+                <label for="project_type" class="form-label">Type of project</label>
+                <select class="form-select" aria-label="Default select example" name="data[project_type]"
+                    id="project_type">
+                    <option selected value="Micro controller - 2000">Micro controller - 2000rs</option>
+                    <option value="Website - 1500">Website - 1500rs</option>
+                    <option value="Android - 1500">Android - 1500rs</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="project_desc" class="form-label">Project Description</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" required
+                    name="data[project_desc]"></textarea>
+            </div>
+            <div class="mb-3 form-check">
+                <label class="form-check-label" for="project_report">
+                    project Report - 200rs
+
+                    <input class="form-check-input" type="checkbox" value="200" id="project_report"
+                        name="data[project_report]">
+                </label>
+
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">Submit</button>
+            </div>
+
+        </form>
+    </div>
+
+
+
+
+    <!-- modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Tiger-tech</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body mx-4">
+                            <div class="container" id="result">
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submit_modal">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script>
+        // verfication 
+        (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+
+        // submit form 
+        var form = document.getElementById('sheetdb-form');
+        form.addEventListener("submit", e => {
+
+
+            // console.log(flag)
+            let project_type = document.querySelector('#project_type').selectedIndex;
+            let token = parseInt(project_type)
+            let project_report = document.querySelector('#project_report')
+            let report_amount = 0;
+            let project_amount = 0;
+            let project_name;
+
+            if (project_report.checked) {
+                report_amount = 200
+            }
+            if (token == 0) {
+                project_amount = 2000;
+                project_name = "Micro controller"
+            }
+            else if (token == 1) {
+                project_amount = 1500;
+                project_name = "Website"
+            }
+            else {
+                project_amount = 1500;
+                project_name = "Android"
+            }
+
+            let amount = report_amount + project_amount;
+
+            let name = document.getElementById('name').value;
+            let email = document.getElementById('email').value;
+            let date = new Date();
+            let datestring = `${date.getDate()} / ${date.getMonth() + 1} /${date.getFullYear()}`;
+
+
+
+            let result = document.getElementById('result');
+
+            result.innerHTML = `
+            <p class="my-5 mx-5" style="font-size: 30px;">INVOICE</p>
+                                <div class="row">
+                                    <ul class="list-unstyled">
+                                        <li class="text-black">${name}</li>
+                                        <li class="text-black">${email}</li>
+                                        <li class="text-black mt-1">${datestring}</li>
+                                    </ul>
+                                    <hr>
+                                    <div class="col-xl-10">
+                                        <p>${project_name}</p>
+                                    </div>
+                                    <div class="col-xl-2">
+                                        <p class="float-end">${project_amount} Rs
+                                        </p>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-10">
+                                        <p>Report</p>
+                                    </div>
+                                    <div class="col-xl-2">
+                                        <p class="float-end">${report_amount} Rs
+                                        </p>
+                                    </div>
+                                    <hr>
+                                </div>
+
+                                <div class="row text-black">
+
+                                    <div class="col-xl-12">
+                                        <p class="float-end fw-bold">Total: ${amount} Rs
+                                        </p>
+                                    </div>
+                                    <hr style="border: 2px solid black;">
+                                </div>
+                                <div class="text-center" style="margin-top: 90px;">
+                                    <a><u class="text-info">Tiger Tech</u></a>
+                                    <p>This is the temporary invoice </p>
+                                </div>
+            
+            `;
+            // let submitted = 0;
+            let submit_modal = document.getElementById('submit_modal');
+            e.preventDefault();
+            
+            fetch(form.action, {
+                method: "POST",
+                body: new FormData(document.getElementById("sheetdb-form")),
+            }).then(
+                response => response.json()
+            ).then((html) => {
+
+
+                console.log(amount);
+                submit_modal.addEventListener('click', () => {
+
+
+                var printContents = document.getElementById('result').innerHTML;
+                var originalContents = document.body.innerHTML;
+
+                document.body.innerHTML = printContents;
+
+                window.print();
+
+                document.body.innerHTML = originalContents;
+
+
+            })
+
+
+            });
+
+
+
+
+
+
+
+
+
+        });
+    </script>
+</body>
+
+</html>
